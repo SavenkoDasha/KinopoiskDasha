@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">KinopoiskDasha</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="kinopoisk" translatable="false">KinoPoisk</string>
+    <string name="login" translatable="false">Логин</string>
+    <string name="password" translatable="false">Пароль</string>
+    <string name="sign_in" translatable="false">"Войти"</string>
 </resources>
