@@ -32,9 +32,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewBinding.loginPassword.doOnTextChanged { text, _, _, _ ->
             viewModel.handleEvent(LoginEvent.OnPasswordChanged(text.toString()))
         }
-        viewBinding.loginBtn.setOnClickListener { viewModel.handleEvent(LoginEvent.OnLoginClicked) }
+        viewBinding.loginBtn.setOnClickListener {
+            viewModel.handleEvent(LoginEvent.OnLoginClicked)
+        }
     }
 }
+
 var EditText.newText: String?
     get() = text.toString()
     set(value) {
