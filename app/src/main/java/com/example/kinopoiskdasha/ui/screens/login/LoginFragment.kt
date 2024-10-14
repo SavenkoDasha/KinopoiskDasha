@@ -23,6 +23,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.uiState.collect { state ->
                 viewBinding.loginEmail.newText = state.emailValue
                 viewBinding.loginPassword.newText = state.passwordValue
+                viewBinding.loginBtn.isEnabled = state.isButtonEnabled
             }
         }
 
@@ -32,9 +33,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewBinding.loginPassword.doOnTextChanged { text, _, _, _ ->
             viewModel.handleEvent(LoginEvent.OnPasswordChanged(text.toString()))
         }
-        viewBinding.loginBtn.setOnClickListener { viewModel.handleEvent(LoginEvent.OnLoginClicked) }
     }
 }
+
 var EditText.newText: String?
     get() = text.toString()
     set(value) {
