@@ -2,9 +2,12 @@ package com.example.kinopoiskdasha.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kinopoiskdasha.data.Provider
+import com.example.kinopoiskdasha.data.dto.UserData
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnEmailChanged
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnLoginClicked
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnPasswordChanged
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +17,7 @@ import kotlinx.coroutines.launch
 data class LoginUiState(
     val emailValue: String = "",
     val passwordValue: String = "",
+    var isButtonEnabled: Boolean = false,
 )
 
 class LoginViewModel : ViewModel() {
@@ -30,9 +34,19 @@ class LoginViewModel : ViewModel() {
 
     private fun changeEmail(new: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(emailValue = new) }
+            _uiState.update {
+                it.copy(
+                    emailValue = new
+                )
+            }
+                _uiState.update {
+                    if(new.length >= 3) {
+                        delay(3000L)
+                    }
+                    it.copy(isButtonEnabled = new.length >= 3)
+                }
+            }
         }
-    }
 
     private fun changePassword(new: String) {
         viewModelScope.launch {
@@ -40,5 +54,12 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    private fun loginClicked() {}
+    private fun loginClicked() {
+        Provider.dataSource.updateUser(
+            UserData(
+                email = uiState.value.emailValue,
+                password = uiState.value.passwordValue
+            )
+        )
+    }
 }
