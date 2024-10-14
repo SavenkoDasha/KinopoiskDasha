@@ -23,6 +23,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.uiState.collect { state ->
                 viewBinding.loginEmail.newText = state.emailValue
                 viewBinding.loginPassword.newText = state.passwordValue
+                viewBinding.loginBtn.isEnabled = state.isButtonEnabled
             }
         }
 
