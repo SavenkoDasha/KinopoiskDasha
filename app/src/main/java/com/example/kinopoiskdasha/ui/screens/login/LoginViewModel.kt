@@ -2,6 +2,9 @@ package com.example.kinopoiskdasha.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kinopoiskdasha.data.Provider
+import com.example.kinopoiskdasha.data.UserDataSource
+import com.example.kinopoiskdasha.data.dto.UserData
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnEmailChanged
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnLoginClicked
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnPasswordChanged
@@ -40,5 +43,10 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    private fun loginClicked() {}
+    private fun loginClicked() {
+        Provider.dataSource.updateUser(
+            UserData(email = uiState.value.emailValue,
+            password = uiState.value.passwordValue)
+        )
+    }
 }
