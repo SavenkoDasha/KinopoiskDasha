@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp").version("1.6.10-1.0.4")
 }
 
 android {
@@ -37,8 +38,10 @@ android {
 
 dependencies {
     implementation libs.viewbindingpropertydelegate.full
+    ksp(libs.moshi.kotlin.codegen)
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
+    implementation libs.moshi.kotlin
     implementation libs.material
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
