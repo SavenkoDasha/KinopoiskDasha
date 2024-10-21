@@ -37,14 +37,10 @@ class LoginViewModel : ViewModel() {
 
     private fun changeEmail(new: String) {
         emailChangeJob?.cancel()
-
         _uiState.update { it.copy(emailValue = new) }
-
         emailChangeJob = viewModelScope.launch {
             _uiState.update {
-                if (new.length >= 3) {
-                    delay(3000L)
-                }
+                delay(300L)
                 it.copy(isButtonEnabled = new.length >= 3)
             }
         }
