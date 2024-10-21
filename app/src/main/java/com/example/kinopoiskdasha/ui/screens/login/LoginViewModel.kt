@@ -7,6 +7,7 @@ import com.example.kinopoiskdasha.data.dto.UserData
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnEmailChanged
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnLoginClicked
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnPasswordChanged
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +25,8 @@ class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    private var emailChangeJob: Job? = null
+
     fun handleEvent(event: LoginEvent) {
         when (event) {
             is OnPasswordChanged -> changePassword(event.value)
@@ -33,20 +36,19 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun changeEmail(new: String) {
-        viewModelScope.launch {
+        emailChangeJob?.cancel()
+
+        _uiState.update { it.copy(emailValue = new) }
+
+        emailChangeJob = viewModelScope.launch {
             _uiState.update {
-                it.copy(
-                    emailValue = new
-                )
-            }
-                _uiState.update {
-                    if(new.length >= 3) {
-                        delay(3000L)
-                    }
-                    it.copy(isButtonEnabled = new.length >= 3)
+                if (new.length >= 3) {
+                    delay(3000L)
                 }
+                it.copy(isButtonEnabled = new.length >= 3)
             }
         }
+    }
 
     private fun changePassword(new: String) {
         viewModelScope.launch {
