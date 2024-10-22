@@ -18,23 +18,24 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                viewBinding.loginEmail.newText = state.emailValue
-                viewBinding.loginPassword.newText = state.passwordValue
-                viewBinding.loginBtn.isEnabled = state.isButtonEnabled
+        with(viewBinding) {
+            lifecycleScope.launch {
+                viewModel.uiState.collect { state ->
+                    loginEmail.newText = state.emailValue
+                    loginPassword.newText = state.passwordValue
+                    loginBtn.isEnabled = state.isButtonEnabled
+                }
             }
-        }
 
-        viewBinding.loginEmail.doOnTextChanged { text, _, _, _ ->
-            viewModel.handleEvent(LoginEvent.OnEmailChanged(text.toString()))
-        }
-        viewBinding.loginPassword.doOnTextChanged { text, _, _, _ ->
-            viewModel.handleEvent(LoginEvent.OnPasswordChanged(text.toString()))
-        }
-        viewBinding.loginBtn.setOnClickListener {
-            viewModel.handleEvent(LoginEvent.OnLoginClicked)
+            loginEmail.doOnTextChanged { text, _, _, _ ->
+                viewModel.handleEvent(LoginEvent.OnEmailChanged(text.toString()))
+            }
+            loginPassword.doOnTextChanged { text, _, _, _ ->
+                viewModel.handleEvent(LoginEvent.OnPasswordChanged(text.toString()))
+            }
+            loginBtn.setOnClickListener {
+                viewModel.handleEvent(LoginEvent.OnLoginClicked)
+            }
         }
     }
 }
