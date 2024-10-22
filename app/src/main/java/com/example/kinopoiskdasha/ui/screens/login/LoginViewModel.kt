@@ -3,17 +3,11 @@ package com.example.kinopoiskdasha.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoiskdasha.data.Provider
-import com.example.kinopoiskdasha.data.dto.UserData
-import com.example.kinopoiskdasha.data.Provider
-import com.example.kinopoiskdasha.data.dto.UserData
-import com.example.kinopoiskdasha.data.Provider
-import com.example.kinopoiskdasha.data.UserDataSource
-import com.example.kinopoiskdasha.data.dto.UserData
+import com.example.kinopoiskdasha.domain.User
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnEmailChanged
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnLoginClicked
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnPasswordChanged
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +19,7 @@ data class LoginUiState(
     val emailValue: String = "",
     val passwordValue: String = "",
     var isButtonEnabled: Boolean = false,
+    val currentUser: User? = null,
 )
 
 class LoginViewModel : ViewModel() {
@@ -32,6 +27,15 @@ class LoginViewModel : ViewModel() {
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     private var emailChangeJob: Job? = null
+
+    init {
+        viewModelScope.launch {
+            val currentUser = Provider.userRepository.getUser()
+            if (currentUser != null) {
+                _uiState.update { it.copy(currentUser = currentUser, emailValue = currentUser.email) }
+            }
+        }
+    }
 
     fun handleEvent(event: LoginEvent) {
         when (event) {
@@ -59,11 +63,11 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun loginClicked() {
-        Provider.dataSource.updateUser(
-            UserData(
-                email = uiState.value.emailValue,
-                password = uiState.value.passwordValue
-            )
-        )
+        viewModelScope.launch {
+            with(uiState.value) {
+                val user = User(email = emailValue, password = passwordValue)
+                Provider.userRepository.saveUser(user)
+            }
+        }
     }
 }
