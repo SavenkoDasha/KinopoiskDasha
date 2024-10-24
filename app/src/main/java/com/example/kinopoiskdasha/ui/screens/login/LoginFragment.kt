@@ -7,6 +7,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentLoginBinding
@@ -35,6 +36,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
             loginBtn.setOnClickListener {
                 viewModel.handleEvent(LoginEvent.OnLoginClicked)
+                findNavController().navigate(R.id.action_loginFragment_to_filmsFragment)
             }
         }
     }
