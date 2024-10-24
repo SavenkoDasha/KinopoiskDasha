@@ -1,6 +1,5 @@
 package com.example.kinopoiskdasha.data
 
-import com.example.kinopoiskdasha.data.dto.UserData
 import com.example.kinopoiskdasha.domain.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

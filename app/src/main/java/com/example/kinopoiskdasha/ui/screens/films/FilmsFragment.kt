@@ -7,8 +7,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentFilmsBinding
 
-class FilmsFragment : Fragment(R.layout.fragment_films){
+class FilmsFragment : Fragment(R.layout.fragment_films) {
     private val viewBinding: FragmentFilmsBinding by viewBinding(FragmentFilmsBinding::bind)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
