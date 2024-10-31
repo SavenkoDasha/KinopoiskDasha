@@ -37,6 +37,10 @@ android {
 }
 
 dependencies {
+    implementation libs.retrofit
+    implementation libs.converter.moshi
+    implementation(libs.logging.interceptor)
+
     implementation libs.viewbindingpropertydelegate.full
     ksp(libs.moshi.kotlin.codegen)
     implementation libs.androidx.core.ktx
@@ -47,11 +51,9 @@ dependencies {
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.fragment.ktx
 
-    def nav_version = "2.8.3"
-
 // Views/Fragments Integration
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation libs.androidx.navigation.fragment.ktx
+    implementation libs.androidx.navigation.ui.ktx
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
