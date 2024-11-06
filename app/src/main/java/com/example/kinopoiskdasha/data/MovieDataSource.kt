@@ -1,8 +1,8 @@
 package com.example.kinopoiskdasha.data
 
 import com.example.kinopoiskdasha.data.dto.MovieDto
-import com.example.kinopoiskdasha.retrofit.Common
-import com.example.kinopoiskdasha.retrofit.RetrofitServices
+import com.example.kinopoiskdasha.data.retrofit.Common
+import com.example.kinopoiskdasha.data.retrofit.RetrofitServices
 
 interface MovieDataSource {
     suspend fun getMovie(page: Int): List<MovieDto>

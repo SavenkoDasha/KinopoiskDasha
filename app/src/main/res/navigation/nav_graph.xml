@@ -18,5 +18,9 @@
         android:id="@+id/filmsFragment"
         android:name="com.example.kinopoiskdasha.ui.screens.films.FilmsFragment"
         android:label="FilmsFragment"
-        tools:layout="@layout/fragment_films" />
+        tools:layout="@layout/fragment_films" >
+        <action
+            android:id="@+id/action_filmsFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>
