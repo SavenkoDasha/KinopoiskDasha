@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cyan">#00BCD4</color>
     <color name="cyanHint">#9F00BCD4</color>
+    <color name="greyHint">#9F3B4247</color>
+    <color name="grey">#FF939393</color>
 </resources>

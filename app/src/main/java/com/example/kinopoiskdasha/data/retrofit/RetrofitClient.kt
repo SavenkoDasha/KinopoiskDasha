@@ -1,4 +1,4 @@
-package com.example.kinopoiskdasha.retrofit
+package com.example.kinopoiskdasha.data.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
