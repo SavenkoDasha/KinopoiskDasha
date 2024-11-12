@@ -27,7 +27,6 @@ class UserDataSourceImpl(
             null
         }
 
-
     @SuppressLint("ApplySharedPref")
     override suspend fun updateUser(user: User) {
         val json = adapter.toJson(user)
