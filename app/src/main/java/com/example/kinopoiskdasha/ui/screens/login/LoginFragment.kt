@@ -11,8 +11,6 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentLoginBinding
-import com.example.kinopoiskdasha.ui.screens.films.FilmsEvent
-import com.example.kinopoiskdasha.ui.screens.films.FilmsLabel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 

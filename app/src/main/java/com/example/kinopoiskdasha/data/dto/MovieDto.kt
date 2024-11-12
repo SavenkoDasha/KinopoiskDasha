@@ -9,9 +9,9 @@ data class MovieDto(
     @Json(name = "description")
     val description: String? = null,
     @Json(name = "countries")
-    val countries: String? = null,
+    val countries: List<CountryDto> = emptyList(),
     @Json(name = "genres")
-    val genres: String? = null,
+    val genres: List<GenreDto> = emptyList(),
     @Json(name = "startYear")
     val startYear: String? = null,
     @Json(name = "endYear")
@@ -20,4 +20,16 @@ data class MovieDto(
     val ratingKinopoisk: Double? = null,
     @Json(name = "imageUrl")
     val imageUrl: String? = null,
+)
+
+@JsonClass(generateAdapter = true)
+data class CountryDto(
+    @Json(name = "country")
+    val country: String
+)
+
+@JsonClass(generateAdapter = true)
+data class GenreDto(
+    @Json(name = "genre")
+    val genre: String
 )

@@ -52,7 +52,6 @@
         android:id="@+id/film_year_and_country"
         android:layout_width="98dp"
         android:layout_height="27dp"
-        android:layout_marginEnd="36dp"
         android:text="1994, USA"
         android:textColor="@color/grey"
         android:textSize="20sp"
