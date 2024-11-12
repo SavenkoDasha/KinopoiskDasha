@@ -8,6 +8,7 @@ import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnEmailChanged
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnLoginClicked
 import com.example.kinopoiskdasha.ui.screens.login.LoginEvent.OnPasswordChanged
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,8 @@ data class LoginUiState(
 class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+
+    val labels = Channel<LoginLabel>()
 
     private var emailChangeJob: Job? = null
 
@@ -67,6 +70,7 @@ class LoginViewModel : ViewModel() {
             with(uiState.value) {
                 val user = User(email = emailValue, password = passwordValue)
                 Provider.userRepository.saveUser(user)
+                labels.send(LoginLabel.OnNavigateToMovies)
             }
         }
     }

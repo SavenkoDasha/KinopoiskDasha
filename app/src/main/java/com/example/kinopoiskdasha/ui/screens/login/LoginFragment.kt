@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentLoginBinding
+import com.example.kinopoiskdasha.ui.screens.films.FilmsEvent
+import com.example.kinopoiskdasha.ui.screens.films.FilmsLabel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -19,6 +22,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launch {
+            viewModel.labels.consumeEach(::handleLabels)
+        }
+
         with(viewBinding) {
             lifecycleScope.launch {
                 viewModel.uiState.collect { state ->
@@ -36,8 +43,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
             loginBtn.setOnClickListener {
                 viewModel.handleEvent(LoginEvent.OnLoginClicked)
+            }
+        }
+    }
+
+    private fun handleLabels(label: LoginLabel) {
+        when (label) {
+            LoginLabel.OnNavigateToMovies -> {
                 findNavController().navigate(R.id.action_loginFragment_to_filmsFragment)
             }
+            else -> {}
         }
     }
 }

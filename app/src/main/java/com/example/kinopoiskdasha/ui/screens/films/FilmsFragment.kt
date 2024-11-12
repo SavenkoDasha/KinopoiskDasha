@@ -35,7 +35,6 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
             FilmsLabel.OnNavigateToLogin -> {
                 findNavController().navigate(R.id.action_filmsFragment_to_loginFragment)
             }
-
             else -> {}
         }
     }
