@@ -1,10 +1,10 @@
 package com.example.kinopoiskdasha.ui.screens.films
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kinopoiskdasha.data.MovieMapper
 import com.example.kinopoiskdasha.data.Provider
-import com.example.kinopoiskdasha.domain.Movie
+import com.example.kinopoiskdasha.ui.model.MovieUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 data class FilmsUiState(
     val finder: String = "",
-    val films: List<Movie> = emptyList(),
+    val films: List<MovieUi> = emptyList(),
     val isSortedDescending: Boolean = false,
 )
 
@@ -26,8 +26,8 @@ class FilmsViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             val response = Provider.movieRepository.getMovieResponse(1)
-            _uiState.update { it.copy(films = response.items) }
-            Log.d("", response.items.toString())
+            val mapper = MovieMapper()
+            _uiState.update { it.copy(films = mapper.mapDomainToUI(response.items)) }
         }
     }
 

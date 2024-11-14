@@ -1,12 +1,11 @@
-package com.example.kinopoiskdasha.domain
+package com.example.kinopoiskdasha.ui.model
 
-data class Movie(
+data class MovieUi(
     val id: Int,
     val nameOriginal: String?,
     val description: String?,
-    val countries: List<String> = emptyList(),
     val genres: List<String> = emptyList(),
-    val startYear: String?,
+    val filmYearAndCountry: String?,
     val ratingKinopoisk: Double?,
     val imageUrl: String?,
 )

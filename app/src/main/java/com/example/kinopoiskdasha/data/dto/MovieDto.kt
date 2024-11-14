@@ -4,6 +4,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MovieDto(
+    @Json(name = "kinopoiskId")
+    val id: Int,
     @Json(name = "nameOriginal")
     val nameOriginal: String? = null,
     @Json(name = "description")
@@ -12,13 +14,11 @@ data class MovieDto(
     val countries: List<CountryDto> = emptyList(),
     @Json(name = "genres")
     val genres: List<GenreDto> = emptyList(),
-    @Json(name = "startYear")
+    @Json(name = "year")
     val startYear: String? = null,
-    @Json(name = "endYear")
-    val endYear: String? = null,
     @Json(name = "ratingKinopoisk")
     val ratingKinopoisk: Double? = null,
-    @Json(name = "imageUrl")
+    @Json(name = "posterUrlPreview")
     val imageUrl: String? = null,
 )
 
