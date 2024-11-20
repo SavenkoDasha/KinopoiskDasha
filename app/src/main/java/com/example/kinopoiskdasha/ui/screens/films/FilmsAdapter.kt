@@ -26,19 +26,16 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
     }
 
     private val dataSet = AsyncListDiffer(this, diffUtil)
-
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val binding : FilmsItemBinding by viewBinding(FilmsItemBinding::bind)
     }
-
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.films_item, viewGroup, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder,  position: Int) {
         with(dataSet.currentList[position]) {
-            println(imageUrl)
             with(viewHolder.binding) {
                 Glide.with(KinopoiskApp.applicationContext())
                     .load(imageUrl)
@@ -47,7 +44,7 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
                 tvFilmName.text = nameOriginal
                 tvFilmGenres.text = genres.joinToString()
                 tvFilmYearAndCountry.text = filmYearAndCountry
-                tvFilmRating.text = ratingKinopoisk.toString() ?: "?"
+                tvFilmRating.text = ratingKinopoisk.toString()
             }
         }
 

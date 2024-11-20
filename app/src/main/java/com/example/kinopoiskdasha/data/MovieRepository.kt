@@ -39,7 +39,7 @@ class MovieMapper {
         movieList.map { dto ->
             Movie(
                 id = dto.id,
-                nameOriginal = dto.nameOriginal,
+                nameOriginal = dto.nameRussian ?: dto.nameEnglish ?: dto.nameOriginal,
                 description = dto.description,
                 genres = dto.genres.map { genreDto ->
                     genreDto.genre

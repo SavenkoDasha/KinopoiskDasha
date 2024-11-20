@@ -6,6 +6,10 @@ import com.squareup.moshi.JsonClass
 data class MovieDto(
     @Json(name = "kinopoiskId")
     val id: Int,
+    @Json(name = "nameRu")
+    val nameRussian: String? = null,
+    @Json(name = "nameEn")
+    val nameEnglish: String? = null,
     @Json(name = "nameOriginal")
     val nameOriginal: String? = null,
     @Json(name = "description")

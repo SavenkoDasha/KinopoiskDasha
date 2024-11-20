@@ -1,5 +1,6 @@
 package com.example.kinopoiskdasha.ui.screens.films
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,11 +27,18 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
         val filmsAdapter = FilmsAdapter()
         with(viewBinding) {
             logoutBtn.setOnClickListener {
-                 viewModel.handleEvent(FilmsEvent.onLogOutClicked)
+                 viewModel.handleEvent(FilmsEvent.OnLogOutClicked)
             }
+
             filmsRecyclerView.layoutManager =
                 LinearLayoutManager(KinopoiskApp.applicationContext())
             filmsRecyclerView.adapter = filmsAdapter
+
+            filmsRecyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+                val pos = (filmsRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                viewModel.handleEvent(FilmsEvent.OnScrollPositionChanged(pos))
+                Log.d("FilmsFragment", "onViewCreated: $pos")
+            }
         }
 
         lifecycleScope.launch {
@@ -39,6 +47,7 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
             }
         }
     }
+
     private fun handleLabels(label: FilmsLabel) {
         when (label) {
             FilmsLabel.OnNavigateToLogin -> {

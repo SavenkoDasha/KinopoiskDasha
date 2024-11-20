@@ -16,6 +16,8 @@ data class FilmsUiState(
     val finder: String = "",
     val films: List<MovieUi> = emptyList(),
     val isSortedDescending: Boolean = false,
+    val currentLastPosition: Int = 0,
+    val page: Int = 1,
 )
 
 class FilmsViewModel: ViewModel() {
@@ -25,7 +27,7 @@ class FilmsViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-            val response = Provider.movieRepository.getMovieResponse(1)
+            val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
             val mapper = MovieMapper()
             _uiState.update { it.copy(films = mapper.mapDomainToUI(response.items)) }
         }
@@ -33,13 +35,30 @@ class FilmsViewModel: ViewModel() {
 
     fun handleEvent(event: FilmsEvent) {
         when (event) {
-            is FilmsEvent.onLogOutClicked -> logOutClicked()
+            is FilmsEvent.OnLogOutClicked -> logOutClicked()
+            is FilmsEvent.OnScrollPositionChanged -> positionChanged(event.position)
         }
     }
 
     private fun logOutClicked() {
         viewModelScope.launch {
             labels.send(FilmsLabel.OnNavigateToLogin)
+        }
+    }
+
+    private fun positionChanged(position: Int) {
+        if (position == _uiState.value.currentLastPosition) return
+
+        _uiState.update { it.copy(currentLastPosition = position) }
+
+        if (position == _uiState.value.films.lastIndex) {
+            _uiState.update { it.copy(page = it.page + 1) }
+
+            viewModelScope.launch {
+                val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
+                val mapper = MovieMapper()
+                _uiState.update { it.copy(films = it.films.plus(mapper.mapDomainToUI(response.items))) }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.kinopoiskdasha.ui.screens.films
 
 sealed interface FilmsEvent {
-    data object onLogOutClicked: FilmsEvent
+    data object OnLogOutClicked: FilmsEvent
+    data class OnScrollPositionChanged(val position: Int) : FilmsEvent
 }
