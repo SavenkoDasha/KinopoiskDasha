@@ -2,8 +2,8 @@ package com.example.kinopoiskdasha.ui.screens.films
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kinopoiskdasha.data.MovieMapper
 import com.example.kinopoiskdasha.data.Provider
+import com.example.kinopoiskdasha.ui.mapping.mapToUI
 import com.example.kinopoiskdasha.ui.model.MovieUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +28,8 @@ class FilmsViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
-            val mapper = MovieMapper()
-            _uiState.update { it.copy(films = mapper.mapDomainToUI(response.items)) }
+            val films = response.items.map { it.mapToUI() }
+            _uiState.update { it.copy(films = films) }
         }
     }
 
@@ -37,7 +37,14 @@ class FilmsViewModel: ViewModel() {
         when (event) {
             is FilmsEvent.OnLogOutClicked -> logOutClicked()
             is FilmsEvent.OnScrollPositionChanged -> positionChanged(event.position)
+            is FilmsEvent.OnSortClicked -> sortFilms()
         }
+    }
+
+    private fun sortFilms() {
+        val res = _uiState.value.films.sortedBy {
+            it.filmYearAndCountry.substring(0, 4) }
+        _uiState.update { it.copy(films = res) }
     }
 
     private fun logOutClicked() {
@@ -56,8 +63,8 @@ class FilmsViewModel: ViewModel() {
 
             viewModelScope.launch {
                 val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
-                val mapper = MovieMapper()
-                _uiState.update { it.copy(films = it.films.plus(mapper.mapDomainToUI(response.items))) }
+                val films = response.items.map { it.mapToUI() }
+                _uiState.update { it.copy(films = it.films.plus(films)) }
             }
         }
     }

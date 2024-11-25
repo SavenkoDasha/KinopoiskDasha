@@ -3,6 +3,7 @@ package com.example.kinopoiskdasha.ui.screens.login
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -50,7 +51,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             LoginLabel.OnNavigateToMovies -> {
                 findNavController().navigate(R.id.action_loginFragment_to_filmsFragment)
             }
-            else -> {}
+
+            is LoginLabel.Exception -> Toast.makeText( requireContext(), label.message, Toast.LENGTH_SHORT  ).show()
         }
     }
 }
