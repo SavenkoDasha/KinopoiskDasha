@@ -10,7 +10,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FilmsItemBinding
-import com.example.kinopoiskdasha.ui.KinopoiskApp
 import com.example.kinopoiskdasha.ui.model.MovieUi
 
 class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
@@ -39,14 +38,14 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
     override fun onBindViewHolder(viewHolder: ViewHolder,  position: Int) {
         with(dataSet.currentList[position]) {
             with(viewHolder.binding) {
-                Glide.with(KinopoiskApp.applicationContext())
+                Glide.with(root.context)
                     .load(imageUrl)
                     .placeholder(R.drawable.baseline_downloading_24)
                     .into(ivFilm)
                 tvFilmName.text = nameOriginal
-                tvFilmGenres.text = genres.joinToString()
+                tvFilmGenres.text = genres
                 tvFilmYearAndCountry.text = filmYearAndCountry
-                tvFilmRating.text = ratingKinopoisk.toString()
+                tvFilmRating.text = ratingKinopoisk
             }
         }
 

@@ -18,6 +18,7 @@ constraintlayout = "2.2.0"
 moshiKotlin = "1.15.1"
 navigationFragmentKtx = "2.8.4"
 retrofit = "2.9.0"
+timber = "5.0.1"
 viewbindingpropertydelegateFull = "1.5.9"
 
 [libraries]
@@ -41,6 +42,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshiKotlin" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiKotlin" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 viewbindingpropertydelegate-full = { module = "com.github.kirich1409:viewbindingpropertydelegate-full", version.ref = "viewbindingpropertydelegateFull" }
 
 [plugins]
