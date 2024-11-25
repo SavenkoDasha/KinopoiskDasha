@@ -34,6 +34,10 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
                 LinearLayoutManager(KinopoiskApp.applicationContext())
             filmsRecyclerView.adapter = filmsAdapter
 
+            filmsRecyclerView.layoutManager =
+                LinearLayoutManager(KinopoiskApp.applicationContext())
+            filmsRecyclerView.adapter = filmsAdapter
+
             filmsRecyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
                 val pos = (filmsRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 viewModel.handleEvent(FilmsEvent.OnScrollPositionChanged(pos))
@@ -45,9 +49,6 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
             viewModel.uiState.collect { state ->
                 filmsAdapter.saveData(state.films)
             }
-            filmsRecyclerView.layoutManager =
-                LinearLayoutManager(KinopoiskApp.applicationContext())
-            filmsRecyclerView.adapter = filmsAdapter
         }
 
         lifecycleScope.launch {
