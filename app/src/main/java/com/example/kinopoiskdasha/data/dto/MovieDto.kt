@@ -22,7 +22,7 @@ data class MovieDto(
     val startYear: String? = null,
     @Json(name = "ratingKinopoisk")
     val ratingKinopoisk: Double? = null,
-    @Json(name = "posterUrlPreview")
+    @Json(name = "posterUrl")
     val imageUrl: String? = null,
 )
 

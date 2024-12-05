@@ -64,20 +64,21 @@ class LoginViewModel : ViewModel() {
             _uiState.update { it.copy(passwordValue = new) }
         }
     }
-// password "11111", email "dasha@mail.ru"
+
+    // password "11111", email "dasha@mail.ru"
     private fun loginClicked() {
         viewModelScope.launch {
             with(uiState.value) {
-                val user = User(email = emailValue, password = passwordValue)
-                if(passwordValue == (currentUser?.password) && emailValue == (currentUser.email)) {
-                    Provider.userRepository.saveUser(user)
-                    labels.send(LoginLabel.OnNavigateToMovies)
-                }else if(passwordValue.isEmpty()){
-                    labels.send(LoginLabel.Exception("Empty password"))
-                }else {
-                    labels.send(LoginLabel.Exception("Passwords not equals"))
-                }
+                val prevUser = Provider.userRepository.getUser()
 
+                if (prevUser == null || emailValue != prevUser.email) {
+                    Provider.userRepository.saveUser(User(emailValue, passwordValue))
+                    labels.send(LoginLabel.OnNavigateToMovies)
+                } else if (passwordValue == prevUser.password) {
+                    labels.send(LoginLabel.OnNavigateToMovies)
+                } else {
+                    labels.send(LoginLabel.Exception("Incorrect password or email"))
+                }
             }
         }
     }

@@ -8,4 +8,4 @@ data class MovieUi(
     val filmYearAndCountry: String,
     val ratingKinopoisk: String,
     val imageUrl: String,
-)
+): ListItem
