@@ -2,9 +2,9 @@ package com.example.kinopoiskdasha.data
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import com.example.kinopoiskdasha.data.Provider.moshi
 import com.example.kinopoiskdasha.domain.User
 import com.squareup.moshi.JsonAdapter
+import javax.inject.Inject
 
 private const val USER_KEY = "USER_KEY"
 
@@ -14,9 +14,9 @@ interface UserDataSource {
     suspend fun deleteUser()
 }
 
-class UserDataSourceImpl(
+class UserDataSourceImpl @Inject constructor(
     private val preferences: SharedPreferences,
-    private val adapter: JsonAdapter<User> = moshi.adapter(User::class.java)
+    private val adapter: JsonAdapter<User>,
 ) : UserDataSource {
     @SuppressLint("ApplySharedPref")
     override suspend fun getUser() =

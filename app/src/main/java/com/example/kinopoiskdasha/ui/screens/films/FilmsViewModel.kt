@@ -2,34 +2,46 @@ package com.example.kinopoiskdasha.ui.screens.films
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kinopoiskdasha.data.Provider
+import com.example.kinopoiskdasha.data.MovieRepository
+import com.example.kinopoiskdasha.domain.MovieResponse
 import com.example.kinopoiskdasha.ui.mapping.mapToUI
-import com.example.kinopoiskdasha.ui.model.MovieUi
+import com.example.kinopoiskdasha.ui.model.ListItem
+import com.example.kinopoiskdasha.ui.model.toYearItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class FilmsUiState(
     val finder: String = "",
-    val films: List<MovieUi> = emptyList(),
+    val listItems: List<ListItem> = emptyList(),
     val isSortedDescending: Boolean = false,
     val currentLastPosition: Int = 0,
     val page: Int = 1,
 )
 
-class FilmsViewModel: ViewModel() {
+@HiltViewModel
+class FilmsViewModel @Inject constructor(
+    private val movieRepository: MovieRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(FilmsUiState())
     val uiState: StateFlow<FilmsUiState> = _uiState.asStateFlow()
+
     val labels = Channel<FilmsLabel>()
 
     init {
         viewModelScope.launch {
-            val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
-            val films = response.items.map { it.mapToUI() }
-            _uiState.update { it.copy(films = films) }
+            try {
+                val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
+                val films = mapResponseToListItems(response)
+                _uiState.update { it.copy(listItems = films) }
+            } catch (e: Exception) {
+                labels.send(FilmsLabel.Exception("Error happened"))
+            }
         }
     }
 
@@ -42,9 +54,8 @@ class FilmsViewModel: ViewModel() {
     }
 
     private fun sortFilms() {
-        val res = _uiState.value.films.sortedBy {
-            it.filmYearAndCountry.substring(0, 4) }
-        _uiState.update { it.copy(films = res) }
+        val res = _uiState.value.listItems
+        _uiState.update { it.copy(listItems = res) }
     }
 
     private fun logOutClicked() {
@@ -58,14 +69,25 @@ class FilmsViewModel: ViewModel() {
 
         _uiState.update { it.copy(currentLastPosition = position) }
 
-        if (position == _uiState.value.films.lastIndex) {
+        if (position == _uiState.value.listItems.lastIndex) {
             _uiState.update { it.copy(page = it.page + 1) }
 
             viewModelScope.launch {
-                val response = Provider.movieRepository.getMovieResponse(_uiState.value.page)
-                val films = response.items.map { it.mapToUI() }
-                _uiState.update { it.copy(films = it.films.plus(films)) }
+                val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
+                val films = mapResponseToListItems(response)
+                _uiState.update { it.copy(listItems = it.listItems.plus(films)) }
             }
         }
     }
+
+    private fun mapResponseToListItems(response: MovieResponse) = buildList {
+        response.items.forEach {
+            val movie = it.mapToUI()
+            val year = it.startYear.toString().toYearItem()
+
+            if (!this.contains(year) && !_uiState.value.listItems.contains(year)) add(year)
+            add(movie)
+        }
+    }
 }
+

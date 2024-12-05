@@ -1,7 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp").version("1.6.10-1.0.4")
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'dagger.hilt.android.plugin'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -36,6 +37,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation libs.retrofit
     implementation libs.timber
@@ -43,10 +45,16 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation libs.glide
     annotationProcessor libs.compiler
-    implementation (libs.glide.v4142) {
+    implementation(libs.glide.v4142) {
         transitive = true
     }
 
+    implementation libs.kotlin.stdlib.core
+    implementation libs.kotlin.reflect
+    implementation libs.kotlin.stdlib.jdk8
+
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    ksp 'com.google.dagger:hilt-android-compiler:2.48.1'
     implementation libs.viewbindingpropertydelegate.full
     ksp(libs.moshi.kotlin.codegen)
     implementation libs.androidx.core.ktx
@@ -56,10 +64,15 @@ dependencies {
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.fragment.ktx
-
 // Views/Fragments Integration
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
+
+    //Room
+    implementation 'androidx.room:room-runtime:2.5.0'
+    ksp "androidx.room:room-compiler:2.5.0"
+    implementation 'androidx.room:room-ktx:2.5.0'
+
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

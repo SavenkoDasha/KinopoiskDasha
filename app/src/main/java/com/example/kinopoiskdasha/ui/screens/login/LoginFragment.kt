@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
     private val viewBinding: FragmentLoginBinding by viewBinding(FragmentLoginBinding::bind)
     private val viewModel: LoginViewModel by viewModels()
@@ -52,7 +54,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 findNavController().navigate(R.id.action_loginFragment_to_filmsFragment)
             }
 
-            is LoginLabel.Exception -> Toast.makeText( requireContext(), label.message, Toast.LENGTH_SHORT  ).show()
+            is LoginLabel.Exception -> Toast.makeText(requireContext(), label.message, Toast.LENGTH_SHORT).show()
         }
     }
 }

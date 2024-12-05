@@ -4,6 +4,7 @@ import com.example.kinopoiskdasha.domain.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicReference
+import javax.inject.Inject
 
 interface UserRepository {
     suspend fun saveUser(user: User)
@@ -12,7 +13,9 @@ interface UserRepository {
     suspend fun getUser(): User?
 }
 
-class UserRepositoryImpl(private val source: UserDataSource) : UserRepository {
+class UserRepositoryImpl @Inject constructor(
+    private val source: UserDataSource
+) : UserRepository {
     private var cachedUser: AtomicReference<User?> = AtomicReference()
 
     override suspend fun saveUser(user: User) {
