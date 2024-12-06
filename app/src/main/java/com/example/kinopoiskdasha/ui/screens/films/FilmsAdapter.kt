@@ -3,6 +3,7 @@ package com.example.kinopoiskdasha.ui.screens.films
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,13 +15,13 @@ import com.example.kinopoiskdasha.ui.model.ListItem
 import com.example.kinopoiskdasha.ui.model.MovieUi
 import com.example.kinopoiskdasha.ui.model.YearItem
 
-class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
+class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
 
     private val diffUtil = object : DiffUtil.ItemCallback<ListItem>() {
         override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
-            return if (oldItem is MovieUi && newItem is MovieUi){
+            return if (oldItem is MovieUi && newItem is MovieUi) {
                 oldItem.id == newItem.id
-            } else if (oldItem is YearItem && newItem is YearItem){
+            } else if (oldItem is YearItem && newItem is YearItem) {
                 oldItem.year == newItem.year
             } else {
                 false
@@ -34,8 +35,8 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
 
     private val dataSet = AsyncListDiffer(this, diffUtil)
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        val binding : FilmsItemBinding by viewBinding(FilmsItemBinding::bind)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val binding: FilmsItemBinding by viewBinding(FilmsItemBinding::bind)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -46,24 +47,41 @@ class FilmsAdapter: RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.films_item, viewGroup, false)
+        val view = when (viewType) {
+            MOVIE_ITEM -> LayoutInflater.from(viewGroup.context)
+                .inflate(R.layout.films_item, viewGroup, false)
+
+            YEAR_ITEM -> LayoutInflater.from(viewGroup.context)
+                .inflate(Button.generateViewId(), viewGroup, false)
+
+            else -> throw IllegalStateException("Incorrect item's type")
+        }
+
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder,  position: Int) {
-//        with(dataSet.currentList[position]) {
-//            with(viewHolder.binding) {
-//                Glide.with(root.context)
-//                    .load(imageUrl)
-//                    .placeholder(R.drawable.baseline_downloading_24)
-//                    .into(ivFilm)
-//                tvFilmName.text = nameOriginal
-//                tvFilmGenres.text = genres
-//                tvFilmYearAndCountry.text = filmYearAndCountry
-//                tvFilmRating.text = ratingKinopoisk
-//            }
-//        }
-        TODO()
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val type = getItemViewType(position)
+        when (type) {
+            MOVIE_ITEM -> {
+                with(viewHolder.binding) {
+                    Glide.with(root.context)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.baseline_downloading_24)
+                        .into(ivFilm)
+                    tvFilmName.text = nameOriginal
+                    tvFilmGenres.text = genres
+                    tvFilmYearAndCountry.text = filmYearAndCountry
+                    tvFilmRating.text = ratingKinopoisk
+                }
+            }
+            YEAR_ITEM -> {
+
+            }
+            else -> {
+                throw IllegalStateException("Wrong type")
+            }
+        }
     }
 
     override fun getItemCount() = dataSet.currentList.size
