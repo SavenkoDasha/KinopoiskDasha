@@ -34,25 +34,21 @@ class FilmsFragment : Fragment(R.layout.fragment_films) {
             }
 
             filmsRecyclerView.layoutManager =
-                LinearLayoutManager(context)
+                object : LinearLayoutManager(context) {
+                    override fun supportsPredictiveItemAnimations() = false
+
+                }
             filmsRecyclerView.adapter = filmsAdapter
 
             filmsRecyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
                 val pos = (filmsRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 viewModel.handleEvent(FilmsEvent.OnScrollPositionChanged(pos))
-                Timber.tag("FilmsFragment").d("onViewCreated: %s", pos)
             }
         }
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                filmsAdapter.saveData(state.films)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.uiState.collect { state ->
-                filmsAdapter.saveData(state.films)
+                filmsAdapter.saveData(state.listItems)
             }
         }
     }
