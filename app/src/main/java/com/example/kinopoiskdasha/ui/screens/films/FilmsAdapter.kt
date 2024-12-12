@@ -71,7 +71,6 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
             }
         }
     }
-
     override fun getItemViewType(position: Int): Int {
         return when (dataSet.currentList[position]) {
             is MovieUi -> MOVIE_ITEM
