@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp").version("1.6.10-1.0.4")
+    id("kotlin-kapt")
 }
 
 android {
@@ -46,6 +47,9 @@ dependencies {
     implementation (libs.glide.v4142) {
         transitive = true
     }
+    implementation libs.dagger
+    kapt libs.dagger.compiler
+
 
     implementation libs.viewbindingpropertydelegate.full
     ksp(libs.moshi.kotlin.codegen)
