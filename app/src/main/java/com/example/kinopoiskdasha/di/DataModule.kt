@@ -2,10 +2,14 @@ package com.example.kinopoiskdasha.di
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import androidx.room.Room
 import com.example.kinopoiskdasha.data.MovieDataSource
 import com.example.kinopoiskdasha.data.MovieDataSourceImpl
+import com.example.kinopoiskdasha.data.MovieLocalSource
+import com.example.kinopoiskdasha.data.MovieLocalSourceImpl
 import com.example.kinopoiskdasha.data.UserDataSource
 import com.example.kinopoiskdasha.data.UserDataSourceImpl
+import com.example.kinopoiskdasha.data.db.AppDatabase
 import com.example.kinopoiskdasha.data.retrofit.RetrofitServices
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -26,7 +30,6 @@ private const val BASE_URL = "https://kinopoiskapiunofficial.tech/api/v2.2/"
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataModuleBinds {
-
     @Singleton
     @Binds
     fun bindUserDataSource(impl: UserDataSourceImpl): UserDataSource
@@ -34,11 +37,26 @@ interface DataModuleBinds {
     @Singleton
     @Binds
     fun bindMovieDataSource(impl: MovieDataSourceImpl): MovieDataSource
+
+    @Singleton
+    @Binds
+    fun bindMovieLocalSource(impl: MovieLocalSourceImpl): MovieLocalSource
 }
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModuleProvider {
+
+    @Singleton
+    @Provides
+    fun provideMoviesDao(db: AppDatabase) = db.movieDao()
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
+        context,
+        AppDatabase::class.java, "movies_db"
+    ).build()
 
     @Singleton
     @Provides

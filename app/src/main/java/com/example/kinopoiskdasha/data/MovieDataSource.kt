@@ -9,7 +9,7 @@ interface MovieDataSource {
 }
 
 class MovieDataSourceImpl @Inject constructor (
-    private val movieService: RetrofitServices
+    private val movieService: RetrofitServices,
 ) : MovieDataSource {
     override suspend fun getMovie (order: String, page: Int): MovieResponseDto {
         return movieService.getMovieList (order, page)

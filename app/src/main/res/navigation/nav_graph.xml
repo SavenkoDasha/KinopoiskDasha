@@ -11,16 +11,16 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_filmsFragment"
-            app:destination="@id/filmsFragment" />
+            android:id="@+id/action_loginFragment_to_MoviesFragment"
+            app:destination="@id/MoviesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/filmsFragment"
-        android:name="com.example.kinopoiskdasha.ui.screens.films.FilmsFragment"
-        android:label="FilmsFragment"
-        tools:layout="@layout/fragment_films" >
+        android:id="@+id/MoviesFragment"
+        android:name="com.example.kinopoiskdasha.ui.screens.movies.MoviesFragment"
+        android:label="MoviesFragment"
+        tools:layout="@layout/fragment_movies" >
         <action
-            android:id="@+id/action_filmsFragment_to_loginFragment"
+            android:id="@+id/action_MoviesFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 </navigation>
