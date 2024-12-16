@@ -1,4 +1,4 @@
-package com.example.kinopoiskdasha.ui.screens.films
+package com.example.kinopoiskdasha.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class FilmsUiState(
+data class MoviesUiState(
     val finder: String = "",
     val listItems: List<ListItem> = emptyList(),
     val isSortedDescending: Boolean = false,
@@ -25,42 +25,44 @@ data class FilmsUiState(
 )
 
 @HiltViewModel
-class FilmsViewModel @Inject constructor(
+class MoviesViewModel @Inject constructor(
     private val movieRepository: MovieRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(FilmsUiState())
-    val uiState: StateFlow<FilmsUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MoviesUiState())
+    val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
-    val labels = Channel<FilmsLabel>()
+    val labels = Channel<MoviesLabel>()
 
     init {
         viewModelScope.launch {
             try {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
-                val films = mapResponseToListItems(response)
-                _uiState.update { it.copy(listItems = films) }
+                val movies = mapResponseToListItems(response)
+                movieRepository.saveMovies(*response.items.toTypedArray())
+
+                _uiState.update { it.copy(listItems = movies) }
             } catch (e: Exception) {
-                labels.send(FilmsLabel.Exception("Error happened"))
+                labels.send(MoviesLabel.Exception("Error happened"))
             }
         }
     }
 
-    fun handleEvent(event: FilmsEvent) {
+    fun handleEvent(event: MoviesEvent) {
         when (event) {
-            is FilmsEvent.OnLogOutClicked -> logOutClicked()
-            is FilmsEvent.OnScrollPositionChanged -> positionChanged(event.position)
-            is FilmsEvent.OnSortClicked -> sortFilms()
+            is MoviesEvent.OnLogOutClicked -> logOutClicked()
+            is MoviesEvent.OnScrollPositionChanged -> positionChanged(event.position)
+            is MoviesEvent.OnSortClicked -> sortMovies()
         }
     }
 
-    private fun sortFilms() {
+    private fun sortMovies() {
         val res = _uiState.value.listItems
         _uiState.update { it.copy(listItems = res) }
     }
 
     private fun logOutClicked() {
         viewModelScope.launch {
-            labels.send(FilmsLabel.OnNavigateToLogin)
+            labels.send(MoviesLabel.OnNavigateToLogin)
         }
     }
 
@@ -74,8 +76,9 @@ class FilmsViewModel @Inject constructor(
 
             viewModelScope.launch {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
-                val films = mapResponseToListItems(response)
-                _uiState.update { it.copy(listItems = it.listItems.plus(films)) }
+                val movies = mapResponseToListItems(response)
+                movieRepository.saveMovies(*response.items.toTypedArray())
+                _uiState.update { it.copy(listItems = it.listItems.plus(movies)) }
             }
         }
     }

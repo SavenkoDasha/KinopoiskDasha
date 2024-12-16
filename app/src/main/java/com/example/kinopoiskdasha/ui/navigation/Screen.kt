@@ -4,4 +4,4 @@ interface Screen
 
 data object LoginScreen
 
-data object FilmsScreen
+data object MoviesScreen

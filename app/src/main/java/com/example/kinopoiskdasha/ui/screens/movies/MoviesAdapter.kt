@@ -1,4 +1,4 @@
-package com.example.kinopoiskdasha.ui.screens.films
+package com.example.kinopoiskdasha.ui.screens.movies
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.kinopoiskdasha.R
-import com.example.kinopoiskdasha.databinding.FilmsItemBinding
+import com.example.kinopoiskdasha.databinding.MoviesItemBinding
 import com.example.kinopoiskdasha.databinding.YearItemBinding
 import com.example.kinopoiskdasha.ui.model.ListItem
 import com.example.kinopoiskdasha.ui.model.MovieUi
 import com.example.kinopoiskdasha.ui.model.YearItem
 
-class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
+class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.ViewHolder>() {
 
     private val diffUtil = object : DiffUtil.ItemCallback<ListItem>() {
         override fun areItemsTheSame(oldItem: ListItem, newItem: ListItem): Boolean {
@@ -53,7 +53,7 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
         }
 
         class MovieViewHolder(view: View) : ViewHolder(view) {
-            private val binding: FilmsItemBinding by viewBinding(FilmsItemBinding::bind)
+            private val binding: MoviesItemBinding by viewBinding(MoviesItemBinding::bind)
 
             override fun bind(item: ListItem) {
                 if (item !is MovieUi) return
@@ -62,11 +62,11 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
                     Glide.with(root.context)
                         .load(item.imageUrl)
                         .placeholder(R.drawable.baseline_downloading_24)
-                        .into(ivFilm)
-                    tvFilmName.text = item.nameOriginal
-                    tvFilmGenres.text = item.genres
-                    tvFilmYearAndCountry.text = item.filmYearAndCountry
-                    tvFilmRating.text = item.ratingKinopoisk
+                        .into(ivMovie)
+                    tvMovieName.text = item.nameOriginal
+                    tvMovieGenres.text = item.genres
+                    tvMovieYearAndCountry.text = item.movieYearAndCountry
+                    tvMovieRating.text = item.ratingKinopoisk
                 }
             }
         }
@@ -81,7 +81,7 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = when (viewType) {
             MOVIE_ITEM -> LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.films_item, viewGroup, false)
+                .inflate(R.layout.movies_item, viewGroup, false)
 
             YEAR_ITEM -> LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.year_item, viewGroup, false)

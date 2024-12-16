@@ -5,7 +5,7 @@ data class MovieUi(
     val nameOriginal: String,
     val description: String,
     val genres: String,
-    val filmYearAndCountry: String,
+    val movieYearAndCountry: String,
     val ratingKinopoisk: String,
     val imageUrl: String,
 ): ListItem

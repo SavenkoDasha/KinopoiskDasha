@@ -51,7 +51,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun handleLabels(label: LoginLabel) {
         when (label) {
             LoginLabel.OnNavigateToMovies -> {
-                findNavController().navigate(R.id.action_loginFragment_to_filmsFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_MoviesFragment)
             }
 
             is LoginLabel.Exception -> Toast.makeText(requireContext(), label.message, Toast.LENGTH_SHORT).show()
