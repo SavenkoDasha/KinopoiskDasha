@@ -1,0 +1,15 @@
+plugins {
+    id 'io.gitlab.arturbosch.detekt'
+}
+detekt {
+    input = files(
+            'src/main/java', 'src/main/kotlin',
+            'src/test/java', 'src/test/kotlin',
+            'src/androidTest/java', 'src/androidTest/kotlin'
+    )
+    parallel = true
+    config = files("$rootDir/detekt.yml")
+}
+dependencies {
+    detektPlugins libs.detekt.formatting
+}
