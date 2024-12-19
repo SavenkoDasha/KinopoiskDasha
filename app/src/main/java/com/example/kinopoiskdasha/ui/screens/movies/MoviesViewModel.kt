@@ -3,6 +3,7 @@ package com.example.kinopoiskdasha.ui.screens.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoiskdasha.data.MovieRepository
+import com.example.kinopoiskdasha.domain.Result
 import com.example.kinopoiskdasha.domain.MovieResponse
 import com.example.kinopoiskdasha.ui.mapping.mapToUI
 import com.example.kinopoiskdasha.ui.model.ListItem
@@ -37,10 +38,15 @@ class MoviesViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
-                val movies = mapResponseToListItems(response)
-                movieRepository.saveMovies(*response.items.toTypedArray())
-
-                _uiState.update { it.copy(listItems = movies) }
+                when (response) {
+                    is Result.Error -> {
+                        labels.send(MoviesLabel.Exception(response.error.message.toString()))
+                    }
+                    is Result.Success -> {
+                        val movies = mapResponseToListItems(response.value)
+                        movieRepository.saveMovies(*response.value.items.toTypedArray())
+                        _uiState.update { it.copy(listItems = movies) }}
+                }
             } catch (e: Exception) {
                 labels.send(MoviesLabel.Exception("Error happened"))
             }
@@ -76,9 +82,17 @@ class MoviesViewModel @Inject constructor(
 
             viewModelScope.launch {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
-                val movies = mapResponseToListItems(response)
-                movieRepository.saveMovies(*response.items.toTypedArray())
-                _uiState.update { it.copy(listItems = it.listItems.plus(movies)) }
+                when (response) {
+                    is Result.Error -> {
+                        labels.send(MoviesLabel.Exception(response.error.message.toString()))
+                    }
+                    is Result.Success -> {
+                        val movies = mapResponseToListItems(response.value)
+                        movieRepository.saveMovies(*response.value.items.toTypedArray())
+
+                        _uiState.update { it.copy(listItems = it.listItems.plus(movies)) }
+                    }
+                }
             }
         }
     }
@@ -93,4 +107,3 @@ class MoviesViewModel @Inject constructor(
         }
     }
 }
-
