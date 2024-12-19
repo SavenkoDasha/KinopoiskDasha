@@ -1,0 +1,6 @@
+templatesRootDirPath: /templates/geminio/templates
+modulesTemplatesRootDirPath: /templates/geminio/modules_templates
+
+groupsNames:
+  forNewGroup: MVI Templates
+  forNewModulesGroup: MVI Module Templates

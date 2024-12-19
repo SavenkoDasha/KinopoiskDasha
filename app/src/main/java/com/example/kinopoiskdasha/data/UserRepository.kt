@@ -1,5 +1,6 @@
 package com.example.kinopoiskdasha.data
 
+import com.example.kinopoiskdasha.domain.Result
 import com.example.kinopoiskdasha.domain.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,12 +10,11 @@ import javax.inject.Inject
 interface UserRepository {
     suspend fun saveUser(user: User)
     suspend fun deleteUser()
-    suspend fun fetchUser(): User?
-    suspend fun getUser(): User?
+    suspend fun getUser(): Result<User, Throwable>
 }
 
 class UserRepositoryImpl @Inject constructor(
-    private val source: UserDataSource
+    private val source: UserDataSource,
 ) : UserRepository {
     private var cachedUser: AtomicReference<User?> = AtomicReference()
 
@@ -32,17 +32,15 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchUser(): User? {
-        return withContext(Dispatchers.IO) {
-            cachedUser.get()
-        }
-    }
-
-    override suspend fun getUser(): User? {
-        return withContext(Dispatchers.IO) {
-            val userData = source.getUser() ?: return@withContext null
-            cachedUser.set(User(userData.email, userData.password))
-            cachedUser.get()
+    override suspend fun getUser(): Result<User, Throwable> {
+        return try {
+            withContext(Dispatchers.IO) {
+                val userData = source.getUser() ?: throw Throwable("User not found")
+                cachedUser.set(userData)
+                Result.Success(userData)
+            }
+        } catch (e: Throwable) {
+            Result.Error(e)
         }
     }
 }
