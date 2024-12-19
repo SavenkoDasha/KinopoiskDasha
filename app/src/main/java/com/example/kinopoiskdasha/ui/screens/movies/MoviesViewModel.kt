@@ -1,5 +1,6 @@
 package com.example.kinopoiskdasha.ui.screens.movies
 
+import android.content.ContentValues.TAG
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kinopoiskdasha.data.MovieRepository
@@ -8,12 +9,15 @@ import com.example.kinopoiskdasha.ui.mapping.mapToUI
 import com.example.kinopoiskdasha.ui.model.ListItem
 import com.example.kinopoiskdasha.ui.model.toYearItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
+import timber.log.Timber
 import javax.inject.Inject
 
 data class MoviesUiState(
@@ -31,10 +35,19 @@ class MoviesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MoviesUiState())
     val uiState: StateFlow<MoviesUiState> = _uiState.asStateFlow()
 
+    private val scope = viewModelScope +
+            CoroutineExceptionHandler { _, error ->
+                processError(error)
+            }
+
+    private fun processError(err: Throwable) {
+        Timber.tag(TAG).d(err)
+    }
+
     val labels = Channel<MoviesLabel>()
 
     init {
-        viewModelScope.launch {
+        scope.launch {
             try {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
                 val movies = mapResponseToListItems(response)
@@ -61,7 +74,7 @@ class MoviesViewModel @Inject constructor(
     }
 
     private fun logOutClicked() {
-        viewModelScope.launch {
+        scope.launch {
             labels.send(MoviesLabel.OnNavigateToLogin)
         }
     }
@@ -74,7 +87,7 @@ class MoviesViewModel @Inject constructor(
         if (position == _uiState.value.listItems.lastIndex) {
             _uiState.update { it.copy(page = it.page + 1) }
 
-            viewModelScope.launch {
+            scope.launch {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
                 val movies = mapResponseToListItems(response)
                 movieRepository.saveMovies(*response.items.toTypedArray())
