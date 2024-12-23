@@ -21,13 +21,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private val viewBinding: FragmentMoviesBinding by viewBinding(FragmentMoviesBinding::bind)
     private val viewModel: MoviesViewModel by viewModels()
 
+    private val moviesAdapter = MoviesAdapter()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
             viewModel.labels.consumeEach(::handleLabels)
         }
 
-        val moviesAdapter = MoviesAdapter()
         with(viewBinding) {
             logoutBtn.setOnClickListener {
                  viewModel.handleEvent(MoviesEvent.OnLogOutClicked)
@@ -54,7 +55,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         lifecycleScope.launch {
             viewModel.uiState.collect { state ->
-                moviesAdapter.saveData(state.listItems)
+                moviesAdapter.items = state.listItems
             }
         }
     }
