@@ -2,13 +2,23 @@ package com.example.kinopoiskdasha.ui.screens.movies
 
 import com.bumptech.glide.Glide
 import com.example.kinopoiskdasha.R
+import com.example.kinopoiskdasha.databinding.MockItemBinding
 import com.example.kinopoiskdasha.databinding.MoviesItemBinding
 import com.example.kinopoiskdasha.databinding.YearItemBinding
 import com.example.kinopoiskdasha.ui.model.ListItem
+import com.example.kinopoiskdasha.ui.model.MockItem
 import com.example.kinopoiskdasha.ui.model.MovieUi
 import com.example.kinopoiskdasha.ui.model.YearItem
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 
+
+fun mockAdapterDelegate() = adapterDelegateViewBinding<MockItem, ListItem, MockItemBinding>(
+    { layoutInflater, root -> MockItemBinding.inflate(layoutInflater, root, false) }
+) {
+    bind {
+        binding.tvMock.text = item.text
+    }
+}
 
 fun yearAdapterDelegate() = adapterDelegateViewBinding<YearItem, ListItem, YearItemBinding>(
     { layoutInflater, root -> YearItemBinding.inflate(layoutInflater, root, false) }
