@@ -2,7 +2,9 @@ package com.example.kinopoiskdasha.ui.screens.movies
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.kinopoiskdasha.ui.model.ListItem
+import com.example.kinopoiskdasha.ui.model.MockItem
 import com.example.kinopoiskdasha.ui.model.MovieUi
+import com.example.kinopoiskdasha.ui.model.RecyclerItem
 import com.example.kinopoiskdasha.ui.model.YearItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
@@ -10,6 +12,7 @@ class MoviesAdapter : AsyncListDifferDelegationAdapter<ListItem>(diffUtil) {
     init {
         delegatesManager.addDelegate(yearAdapterDelegate())
         delegatesManager.addDelegate(movieAdapterDelegate())
+        delegatesManager.addDelegate(recyclerAdapterDelegate())
     }
 }
 
