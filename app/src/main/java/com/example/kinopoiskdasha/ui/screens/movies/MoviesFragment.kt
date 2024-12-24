@@ -1,4 +1,5 @@
 package com.example.kinopoiskdasha.ui.screens.movies
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentMoviesBinding
+import com.example.kinopoiskdasha.ui.model.MockItem
+import com.example.kinopoiskdasha.ui.model.RecyclerItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
@@ -31,12 +34,13 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         with(viewBinding) {
             logoutBtn.setOnClickListener {
-                 viewModel.handleEvent(MoviesEvent.OnLogOutClicked)
+                viewModel.handleEvent(MoviesEvent.OnLogOutClicked)
             }
             sortBtn.setOnClickListener {
                 viewModel.handleEvent(MoviesEvent.OnSortClicked)
             }
 
+            //for movies
             moviesRecyclerView.layoutManager =
                 object : LinearLayoutManager(context) {
                     override fun supportsPredictiveItemAnimations() = false
@@ -59,6 +63,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             }
         }
     }
+
     private fun handleLabels(label: MoviesLabel) {
         when (label) {
             MoviesLabel.OnNavigateToLogin -> {

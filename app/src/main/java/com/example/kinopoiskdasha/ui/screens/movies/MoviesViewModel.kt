@@ -7,6 +7,8 @@ import com.example.kinopoiskdasha.domain.Result
 import com.example.kinopoiskdasha.domain.MovieResponse
 import com.example.kinopoiskdasha.ui.mapping.mapToUI
 import com.example.kinopoiskdasha.ui.model.ListItem
+import com.example.kinopoiskdasha.ui.model.MockItem
+import com.example.kinopoiskdasha.ui.model.RecyclerItem
 import com.example.kinopoiskdasha.ui.model.toYearItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +37,8 @@ class MoviesViewModel @Inject constructor(
     val labels = Channel<MoviesLabel>()
 
     init {
+        _uiState.update { it.copy(listItems = listOf(getMockRecyclerItem())) }
+
         viewModelScope.launch {
             try {
                 val response = movieRepository.getMovieResponse("YEAR", uiState.value.page)
@@ -45,7 +49,7 @@ class MoviesViewModel @Inject constructor(
                     is Result.Success -> {
                         val movies = mapResponseToListItems(response.value)
                         movieRepository.saveMovies(*response.value.items.toTypedArray())
-                        _uiState.update { it.copy(listItems = movies) }}
+                        _uiState.update { it.copy(listItems = it.listItems + movies) }}
                 }
             } catch (e: Exception) {
                 labels.send(MoviesLabel.Exception("Error happened"))
@@ -106,4 +110,12 @@ class MoviesViewModel @Inject constructor(
             add(movie)
         }
     }
+
+    private fun getMockRecyclerItem() = RecyclerItem(
+        buildList {
+            repeat(20) {
+                add(MockItem(it.toString()))
+            }
+        }
+    )
 }
