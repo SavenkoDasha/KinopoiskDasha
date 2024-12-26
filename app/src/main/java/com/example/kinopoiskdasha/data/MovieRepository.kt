@@ -1,6 +1,7 @@
 package com.example.kinopoiskdasha.data
 
 import com.example.kinopoiskdasha.data.db.mapper.toEntity
+import com.example.kinopoiskdasha.domain.Frame
 import com.example.kinopoiskdasha.domain.Result
 import com.example.kinopoiskdasha.domain.Movie
 import com.example.kinopoiskdasha.domain.MovieResponse
@@ -15,6 +16,7 @@ interface MovieRepository {
     suspend fun deleteMovies()
     suspend fun fetchMovie(id: Int): Result<Movie, Throwable>
     suspend fun fetchAllMovies(): Flow<List<Movie>>
+    suspend fun getFrames(id: Int): Result<List<Frame>, Throwable>
 }
 
 class MovieRepositoryImpl @Inject constructor(
@@ -31,8 +33,6 @@ class MovieRepositoryImpl @Inject constructor(
             Result.Error(e)
         }
     }
-
-
 
      override suspend fun saveMovies(vararg movie: Movie) {
         val mappedMovies = movie.map { it.toEntity() }.toTypedArray()
@@ -56,4 +56,12 @@ class MovieRepositoryImpl @Inject constructor(
                 }
             }
         }
+
+    override suspend fun getFrames(id: Int): Result<List<Frame>, Throwable> {
+        return try {
+            Result.Success(source.getFrames(id).mapToDomain())
+        } catch (e: Throwable) {
+            Result.Error(e)
+        }
     }
+}

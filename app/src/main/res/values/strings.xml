@@ -8,4 +8,11 @@
     <string name="password">Пароль</string>
     <string name="sign_in">Войти</string>
     <string name="keyword">keyword</string>
+    <string name="description">Описание</string>
+    <string name="button_to_movies_screen">button to movies screen</string>
+    <string name="movie_s_image">movie\'s image</string>
+    <string name="movie_name">movie\'s name</string>
+    <string name="rating">10.0</string>
+    <string name="films_frame">film\'s frame</string>
+    <string name="frames">Кадры</string>
 </resources>

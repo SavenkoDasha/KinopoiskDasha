@@ -22,5 +22,24 @@
         <action
             android:id="@+id/action_MoviesFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_MoviesFragment_to_detailFragment"
+            app:destination="@id/DetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/DetailFragment"
+        android:name="com.example.kinopoiskdasha.ui.screens.movies.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="args"
+            app:argType="com.example.kinopoiskdasha.ui.screens.movies.detail.MovieDetailsArgs"
+            app:nullable="false" />
+
+        <action
+            android:id="@+id/action_DetailFragment_to_MoviesFragment"
+            app:destination="@id/DetailFragment" />
     </fragment>
 </navigation>

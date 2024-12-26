@@ -1,11 +1,20 @@
 package com.example.kinopoiskdasha.domain.mapping
 
 import com.example.kinopoiskdasha.data.db.MovieEntity
+import com.example.kinopoiskdasha.data.dto.FramesResponseDto
 import com.example.kinopoiskdasha.data.dto.MovieDto
 import com.example.kinopoiskdasha.domain.Movie
 import com.example.kinopoiskdasha.data.dto.MovieResponseDto
+import com.example.kinopoiskdasha.domain.Frame
 import com.example.kinopoiskdasha.domain.MovieResponse
 
+
+fun FramesResponseDto.mapToDomain() = this.items.map {
+    Frame(
+        imageUrl = it.imageUrl,
+        previewUrl = it.previewUrl,
+    )
+}
 
 fun MovieDto.mapToDomain() = Movie(
     id = id,
@@ -19,6 +28,7 @@ fun MovieDto.mapToDomain() = Movie(
         countryDto.country
     },
     imageUrl = imageUrl,
+    coverUrl = coverUrl,
     ratingKinopoisk = ratingKinopoisk
 )
 

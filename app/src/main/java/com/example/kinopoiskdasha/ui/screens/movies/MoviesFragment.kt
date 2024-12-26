@@ -3,6 +3,7 @@ package com.example.kinopoiskdasha.ui.screens.movies
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.kinopoiskdasha.R
 import com.example.kinopoiskdasha.databinding.FragmentMoviesBinding
-import com.example.kinopoiskdasha.ui.model.MockItem
-import com.example.kinopoiskdasha.ui.model.RecyclerItem
+import com.example.kinopoiskdasha.ui.screens.movies.detail.DetailFragment
+import com.example.kinopoiskdasha.ui.screens.movies.detail.MovieDetailsArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
@@ -24,7 +25,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private val viewBinding: FragmentMoviesBinding by viewBinding(FragmentMoviesBinding::bind)
     private val viewModel: MoviesViewModel by viewModels()
 
-    private val moviesAdapter = MoviesAdapter()
+    private val moviesAdapter = MoviesAdapter(
+        onMovieClick = { navigateToDetail(it) }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,5 +77,14 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             }
             else -> {}
         }
+    }
+
+    private fun navigateToDetail(id: Int) {
+        val args = MovieDetailsArgs(id)
+
+        findNavController().navigate(
+            R.id.action_MoviesFragment_to_detailFragment,
+            bundleOf(DetailFragment.ARGS_KEY to args)
+        )
     }
 }
