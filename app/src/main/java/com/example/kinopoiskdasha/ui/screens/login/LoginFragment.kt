@@ -33,6 +33,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     loginEmail.newText = state.emailValue
                     loginPassword.newText = state.passwordValue
                     loginBtn.isEnabled = state.isButtonEnabled
+                    tvLastLogin.text = state.lastSuccessfulLogin
                 }
             }
 

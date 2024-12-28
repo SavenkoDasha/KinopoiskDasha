@@ -11,6 +11,7 @@ import com.example.kinopoiskdasha.data.UserDataSource
 import com.example.kinopoiskdasha.data.UserDataSourceImpl
 import com.example.kinopoiskdasha.data.db.AppDatabase
 import com.example.kinopoiskdasha.data.retrofit.RetrofitServices
+import com.example.kinopoiskdasha.domain.LocalDateTimeAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
@@ -62,6 +63,7 @@ object DataModuleProvider {
     @Provides
     fun provideMoshi() = Moshi.Builder()
         .addLast(KotlinJsonAdapterFactory())
+        .add(LocalDateTimeAdapter())
         .build()
 
     @Singleton

@@ -17,6 +17,7 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,6 +32,7 @@ android {
         viewBinding = true
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -56,6 +58,8 @@ dependencies {
     implementation libs.kotlin.reflect
     implementation libs.kotlin.stdlib.jdk8
 
+    coreLibraryDesugaring libs.desugar.jdk.libs
+
     implementation("com.google.dagger:hilt-android:2.48.1")
     ksp 'com.google.dagger:hilt-android-compiler:2.48.1'
     implementation libs.viewbindingpropertydelegate.full
@@ -67,6 +71,8 @@ dependencies {
     implementation libs.androidx.activity
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.fragment.ktx
+
+    implementation(libs.kotlinx.datetime)
 
     // Views/Fragments Integration
     implementation libs.androidx.navigation.fragment.ktx
