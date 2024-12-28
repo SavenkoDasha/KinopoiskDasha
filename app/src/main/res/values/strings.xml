@@ -15,4 +15,29 @@
     <string name="rating">10.0</string>
     <string name="films_frame">film\'s frame</string>
     <string name="frames">Кадры</string>
+
+
+    <plurals name="hours">
+        <item quantity="one">Последний вход был %d час назад</item>
+        <item quantity="two">Последний вход был %d часа назад</item>
+        <item quantity="few">Последний вход был %d часа назад</item>
+        <item quantity="many">Последний вход был %d часов назад</item>
+        <item quantity="other">Последний вход был %d часов назад</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">Последний вход был %d минуту назад</item>
+        <item quantity="two">Последний вход был %d минуты назад</item>
+        <item quantity="few">Последний вход был %d минуты назад</item>
+        <item quantity="many">Последний вход был %d минут назад</item>
+        <item quantity="other">Последний вход был %d минут назад</item>
+    </plurals>
+
+    <plurals name="days">
+        <item quantity="one">Последний вход был %d день назад</item>
+        <item quantity="two">Последний вход был %d дня назад</item>
+        <item quantity="few">Последний вход был %d дня назад</item>
+        <item quantity="many">Последний вход был %d дней назад</item>
+        <item quantity="other">Последний вход был %d дней назад</item>
+    </plurals>
 </resources>

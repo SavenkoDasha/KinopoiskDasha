@@ -20,7 +20,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun saveUser(user: User) {
         withContext(Dispatchers.IO) {
-            val userData = User(user.email, user.password)
+            val userData = User(user.email, user.password, user.lastSuccessfulLogin)
             source.updateUser(userData)
         }
     }
