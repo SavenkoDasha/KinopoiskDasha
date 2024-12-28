@@ -8,10 +8,10 @@ import com.example.kinopoiskdasha.ui.model.RecyclerItem
 import com.example.kinopoiskdasha.ui.model.YearItem
 import com.hannesdorfmann.adapterdelegates4.AsyncListDifferDelegationAdapter
 
-class MoviesAdapter : AsyncListDifferDelegationAdapter<ListItem>(diffUtil) {
+class MoviesAdapter(onMovieClick: (Int) -> Unit) : AsyncListDifferDelegationAdapter<ListItem>(diffUtil) {
     init {
         delegatesManager.addDelegate(yearAdapterDelegate())
-        delegatesManager.addDelegate(movieAdapterDelegate())
+        delegatesManager.addDelegate(movieAdapterDelegate(onMovieClick))
         delegatesManager.addDelegate(recyclerAdapterDelegate())
     }
 }

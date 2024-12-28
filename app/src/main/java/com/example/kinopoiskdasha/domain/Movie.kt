@@ -9,4 +9,5 @@ data class Movie(
     val startYear: String?,
     val ratingKinopoisk: Double?,
     val imageUrl: String?,
+    val coverUrl: String? = null,
 )

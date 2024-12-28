@@ -24,6 +24,8 @@ data class MovieDto(
     val ratingKinopoisk: Double? = null,
     @Json(name = "posterUrlPreview")
     val imageUrl: String? = null,
+    @Json(name = "coverUrl")
+    val coverUrl: String? = null,
 )
 
 @JsonClass(generateAdapter = true)
